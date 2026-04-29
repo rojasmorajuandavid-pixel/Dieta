@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nutrición — Plan 5 Meses</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080808;
+  --surface: #111;
+  --card: #161616;
+  --border: #222;
+  --border2: #2a2a2a;
+  --green: #00C896;
+  --green-dim: rgba(0,200,150,0.12);
+  --green-dark: #009970;
+  --red: #FF4D4D;
+  --red-dim: rgba(255,77,77,0.12);
+  --yellow: #FFB800;
+  --yellow-dim: rgba(255,184,0,0.12);
+  --blue: #4D9EFF;
+  --blue-dim: rgba(77,158,255,0.12);
+  --orange: #FF7A30;
+  --white: #F0F0F0;
+  --gray: #666;
+  --gray2: #444;
+  --light: #999;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* ── MAIN NAV ── */
+.main-nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0;padding:0 32px;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--green);padding:18px 0;margin-right:32px;flex-shrink:0;}
+.nav-logo span{color:var(--white);}
+.nav-tabs{display:flex;gap:0;flex:1;}
+.nav-tab{padding:20px 28px;cursor:pointer;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;}
+.nav-tab:hover{color:var(--light);}
+.nav-tab.active{color:var(--white);border-bottom-color:var(--green);}
+.nav-tab .tab-icon{margin-right:8px;font-size:14px;}
+
+/* ── SECTIONS ── */
+.section{display:none;min-height:100vh;}
+.section.active{display:block;}
+
+/* ══════════════════════════════════════
+   SECCIÓN 1 — CALCULADORA
+══════════════════════════════════════ */
+.calc-hero{padding:48px 32px 32px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.calc-hero::before{content:'KCAL';position:absolute;right:-10px;top:-20px;font-family:'Bebas Neue',sans-serif;font-size:180px;color:rgba(0,200,150,0.03);pointer-events:none;letter-spacing:-4px;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--green-dim);border:1px solid rgba(0,200,150,0.3);color:var(--green);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;margin-bottom:16px;}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.8);}}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);line-height:0.9;letter-spacing:2px;margin-bottom:12px;}
+.hero-title span{color:var(--green);}
+.hero-sub{font-size:14px;color:var(--gray);max-width:500px;line-height:1.6;}
+
+.calc-body{padding:32px;}
+.calc-grid{display:grid;grid-template-columns:1fr 380px;gap:24px;max-width:1200px;}
+
+/* FORM PANEL */
+.form-panel{display:flex;flex-direction:column;gap:20px;}
+.form-section-title{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gray);margin-bottom:4px;display:flex;align-items:center;gap:10px;}
+.form-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.input-group{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.input-wrap{display:flex;flex-direction:column;gap:6px;}
+.input-wrap.full{grid-column:1/-1;}
+.input-label{font-size:11px;font-weight:600;color:var(--light);letter-spacing:1px;text-transform:uppercase;}
+.input-field{background:var(--card);border:1px solid var(--border2);color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;padding:12px 16px;outline:none;transition:border-color 0.2s;-moz-appearance:textfield;}
+.input-field::-webkit-outer-spin-button,.input-field::-webkit-inner-spin-button{-webkit-appearance:none;}
+.input-field:focus{border-color:var(--green);}
+.input-field::placeholder{color:var(--gray2);}
+select.input-field{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+select.input-field option{background:var(--card);}
+
+.radio-group{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.radio-item{position:relative;}
+.radio-item input{position:absolute;opacity:0;width:0;height:0;}
+.radio-label{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 6px;background:var(--card);border:1px solid var(--border2);cursor:pointer;transition:all 0.2s;text-align:center;gap:2px;}
+.radio-label .rl-icon{font-size:18px;}
+.radio-label .rl-text{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gray);}
+.radio-item input:checked + .radio-label{border-color:var(--green);background:var(--green-dim);}
+.radio-item input:checked + .radio-label .rl-text{color:var(--green);}
+
+.food-log-area{background:var(--card);border:1px solid var(--border2);padding:16px;display:flex;flex-direction:column;gap:12px;}
+.food-search-row{display:flex;gap:8px;}
+.food-search-input{flex:1;background:var(--surface);border:1px solid var(--border2);color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;}
+.food-search-input:focus{border-color:var(--green);}
+.btn-add-food{background:var(--green);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;padding:10px 18px;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;}
+.btn-add-food:hover{opacity:0.85;}
+
+.food-suggestions{display:flex;flex-wrap:wrap;gap:6px;}
+.food-chip{background:var(--surface);border:1px solid var(--border2);color:var(--light);font-size:11px;font-weight:600;padding:4px 12px;cursor:pointer;transition:all 0.15s;letter-spacing:0.5px;}
+.food-chip:hover{border-color:var(--green);color:var(--green);}
+
+.food-log-list{display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+.food-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);}
+.food-item-name{flex:1;font-size:13px;font-weight:500;}
+.food-item-macros{display:flex;gap:8px;flex-shrink:0;}
+.macro-mini{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:2px 6px;}
+.macro-mini.p{background:rgba(77,158,255,0.15);color:var(--blue);}
+.macro-mini.c{background:rgba(255,184,0,0.15);color:var(--yellow);}
+.macro-mini.g{background:rgba(255,122,48,0.15);color:var(--orange);}
+.macro-mini.k{background:rgba(0,200,150,0.15);color:var(--green);}
+.btn-remove{background:transparent;border:none;color:var(--gray2);cursor:pointer;font-size:14px;padding:2px 6px;transition:color 0.2s;}
+.btn-remove:hover{color:var(--red);}
+.food-log-empty{text-align:center;color:var(--gray);font-size:13px;padding:24px;font-style:italic;}
+
+.btn-calc{width:100%;background:var(--green);color:#000;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;border:none;padding:16px;cursor:pointer;transition:all 0.2s;margin-top:8px;}
+.btn-calc:hover{background:var(--green-dark);transform:translateY(-1px);}
+.btn-reset{width:100%;background:transparent;border:1px solid var(--border2);color:var(--gray);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:10px;cursor:pointer;transition:all 0.2s;}
+.btn-reset:hover{border-color:var(--red);color:var(--red);}
+
+/* RESULTS PANEL */
+.results-panel{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+
+.result-card{background:var(--card);border:1px solid var(--border2);padding:20px;}
+.result-card.main{border-color:var(--green);border-top:3px solid var(--green);}
+
+.result-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;}
+.result-value{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;letter-spacing:1px;color:var(--green);}
+.result-value span{font-size:20px;color:var(--gray);margin-left:4px;}
+.result-sub{font-size:12px;color:var(--light);margin-top:6px;line-height:1.5;}
+
+.macro-bars{display:flex;flex-direction:column;gap:12px;}
+.macro-bar-item{display:flex;flex-direction:column;gap:5px;}
+.macro-bar-header{display:flex;justify-content:space-between;align-items:center;}
+.macro-bar-name{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.macro-bar-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;}
+.macro-bar-track{height:6px;background:var(--border2);position:relative;overflow:hidden;}
+.macro-bar-fill{height:100%;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);position:relative;}
+.macro-bar-fill::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2));}
+.macro-bar-item.prot .macro-bar-name{color:var(--blue);}
+.macro-bar-item.prot .macro-bar-fill{background:var(--blue);}
+.macro-bar-item.carb .macro-bar-name{color:var(--yellow);}
+.macro-bar-item.carb .macro-bar-fill{background:var(--yellow);}
+.macro-bar-item.fat .macro-bar-name{color:var(--orange);}
+.macro-bar-item.fat .macro-bar-fill{background:var(--orange);}
+
+.status-indicator{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--border2);}
+.status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.status-dot.good{background:var(--green);box-shadow:0 0 8px var(--green);}
+.status-dot.warn{background:var(--yellow);box-shadow:0 0 8px var(--yellow);}
+.status-dot.bad{background:var(--red);box-shadow:0 0 8px var(--red);}
+.status-text{font-size:12px;color:var(--light);line-height:1.4;}
+.status-text strong{color:var(--white);display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
+
+.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mini-stat{background:var(--surface);border:1px solid var(--border);padding:12px;}
+.mini-stat-val{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--white);line-height:1;}
+.mini-stat-label{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px;font-weight:600;}
+
+.week-projection{display:flex;flex-direction:column;gap:6px;}
+.proj-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);}
+.proj-row:last-child{border-bottom:none;}
+.proj-label{font-size:12px;color:var(--light);}
+.proj-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;}
+.proj-val.green{color:var(--green);}
+.proj-val.yellow{color:var(--yellow);}
+.proj-val.red{color:var(--red);}
+
+/* ══════════════════════════════════════
+   SECCIÓN 2 — DIETA
+══════════════════════════════════════ */
+.diet-hero{padding:48px 32px 32px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.diet-hero::before{content:'FOOD';position:absolute;right:-20px;top:-20px;font-family:'Bebas Neue',sans-serif;font-size:180px;color:rgba(255,184,0,0.03);pointer-events:none;}
+.diet-hero .hero-tag{background:var(--yellow-dim);border-color:rgba(255,184,0,0.3);color:var(--yellow);}
+.diet-hero .hero-tag::before{background:var(--yellow);animation:none;}
+.diet-hero .hero-title span{color:var(--yellow);}
+
+.diet-body{padding:32px;}
+
+/* DAY SELECTOR */
+.day-selector{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap;}
+.day-btn{padding:10px 20px;background:var(--card);border:1px solid var(--border2);color:var(--gray);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.day-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+.day-btn.active{background:var(--yellow-dim);border-color:var(--yellow);color:var(--yellow);}
+.day-btn .day-type{display:block;font-size:9px;font-weight:500;letter-spacing:1px;margin-top:2px;color:inherit;opacity:0.7;}
+
+/* MACROS OVERVIEW */
+.diet-macros-bar{background:var(--card);border:1px solid var(--border2);border-top:3px solid var(--yellow);padding:20px;margin-bottom:24px;}
+.dmb-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:16px;}
+.dmb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.dmb-item{text-align:center;}
+.dmb-val{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;margin-bottom:4px;}
+.dmb-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gray);}
+.dmb-item.kcal .dmb-val{color:var(--green);}
+.dmb-item.prot .dmb-val{color:var(--blue);}
+.dmb-item.carb .dmb-val{color:var(--yellow);}
+.dmb-item.fat .dmb-val{color:var(--orange);}
+
+/* MEALS */
+.meals-grid{display:flex;flex-direction:column;gap:16px;}
+.meal-card{background:var(--card);border:1px solid var(--border2);overflow:hidden;}
+.meal-header{display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border);}
+.meal-time{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--white);min-width:75px;}
+.meal-name{flex:1;}
+.meal-name-text{font-size:15px;font-weight:700;margin-bottom:2px;}
+.meal-desc{font-size:12px;color:var(--gray);}
+.meal-kcal{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--green);text-align:right;}
+.meal-kcal span{display:block;font-size:10px;color:var(--gray);font-family:'DM Sans',sans-serif;letter-spacing:1px;text-transform:uppercase;}
+
+.meal-foods{padding:16px 20px;display:flex;flex-direction:column;gap:8px;}
+.meal-food-row{display:flex;align-items:center;gap:12px;padding:8px 10px;background:var(--surface);border-left:2px solid var(--border2);}
+.meal-food-row.highlight{border-left-color:var(--yellow);}
+.mfr-icon{font-size:18px;flex-shrink:0;}
+.mfr-info{flex:1;}
+.mfr-name{font-size:13px;font-weight:600;}
+.mfr-amount{font-size:11px;color:var(--gray);margin-top:1px;}
+.mfr-macros{display:flex;gap:6px;flex-shrink:0;}
+.mfr-badge{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:2px 7px;}
+.mfr-badge.p{background:var(--blue-dim);color:var(--blue);}
+.mfr-badge.c{background:var(--yellow-dim);color:var(--yellow);}
+.mfr-badge.f{background:rgba(255,122,48,0.12);color:var(--orange);}
+
+.meal-tip{margin:0 20px 16px;padding:10px 14px;background:rgba(255,184,0,0.06);border-left:3px solid var(--yellow);font-size:12px;color:var(--light);line-height:1.5;}
+.meal-tip strong{color:var(--yellow);font-size:10px;text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:4px;}
+
+/* ALIMENTOS PERMITIDOS / PROHIBIDOS */
+.food-lists{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
+.food-list-card{background:var(--card);border:1px solid var(--border2);padding:20px;}
+.flc-title{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.flc-title.allow{color:var(--green);}
+.flc-title.deny{color:var(--red);}
+.food-list-items{display:flex;flex-direction:column;gap:6px;}
+.fli-item{display:flex;align-items:center;gap:8px;font-size:13px;padding:4px 0;}
+.fli-icon{font-size:14px;flex-shrink:0;}
+.fli-text{color:var(--light);}
+
+/* SUPPLEMENTS SECTION */
+.supps-section{margin-top:24px;background:var(--card);border:1px solid var(--border2);border-top:3px solid var(--blue);padding:20px;}
+.supps-title{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+.supps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.supp-card{background:var(--surface);border:1px solid var(--border);padding:14px;}
+.supp-name{font-size:13px;font-weight:700;margin-bottom:4px;color:var(--white);}
+.supp-dose{font-family:'DM Mono',monospace;font-size:11px;color:var(--blue);margin-bottom:6px;}
+.supp-when{font-size:11px;color:var(--gray);}
+
+/* FOOTER */
+.app-footer{border-top:1px solid var(--border);padding:20px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.footer-text{font-size:11px;color:var(--gray);}
+.footer-tag{font-family:'DM Mono',monospace;font-size:11px;color:var(--gray2);letter-spacing:1px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .calc-grid{grid-template-columns:1fr;}
+  .results-panel{position:static;max-height:none;}
+}
+@media(max-width:600px){
+  .main-nav{padding:0 16px;}
+  .nav-tab{padding:16px 14px;font-size:11px;}
+  .calc-body,.diet-body{padding:20px 16px;}
+  .calc-hero,.diet-hero{padding:32px 16px 24px;}
+  .input-group{grid-template-columns:1fr;}
+  .radio-group{grid-template-columns:repeat(2,1fr);}
+  .food-lists{grid-template-columns:1fr;}
+  .dmb-grid{grid-template-columns:repeat(2,1fr);}
+  .app-footer{padding:16px;}
+  .day-selector{gap:6px;}
+  .day-btn{padding:8px 12px;font-size:11px;}
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.section.active .calc-hero,.section.active .diet-hero{animation:fadeUp 0.4s ease;}
+.section.active .form-panel,.section.active .results-panel,.section.active .meals-grid{animation:fadeUp 0.4s ease 0.1s both;}
+</style>
+</head>
+<body>
+
+<!-- MAIN NAV -->
+<nav class="main-nav">
+  <div class="nav-logo">NUTRI<span>PLAN</span></div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showSection('calc',this)"><span class="tab-icon">⚡</span>Calculadora</div>
+    <div class="nav-tab" onclick="showSection('diet',this)"><span class="tab-icon">🥗</span>Mi Dieta</div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 1 — CALCULADORA
+══════════════════════════════════════ -->
+<section class="section active" id="sec-calc">
+  <div class="calc-hero">
+    <div class="hero-tag">Calculadora de Macros</div>
+    <h1 class="hero-title">CALCULA TU<br><span>COMBUSTIBLE</span></h1>
+    <p class="hero-sub">Ingresa tus datos y los alimentos del día para ver exactamente cuánto estás comiendo y si estás en déficit para perder grasa.</p>
+  </div>
+
+  <div class="calc-body">
+    <div class="calc-grid">
+
+      <!-- LEFT: FORM -->
+      <div class="form-panel">
+
+        <div>
+          <div class="form-section-title">Tus datos corporales</div>
+          <div class="input-group">
+            <div class="input-wrap">
+              <div class="input-label">Peso actual (kg)</div>
+              <input type="number" class="input-field" id="inp-weight" placeholder="83" value="83" min="40" max="200" step="0.1">
+            </div>
+            <div class="input-wrap">
+              <div class="input-label">Altura (cm)</div>
+              <input type="number" class="input-field" id="inp-height" placeholder="170" value="170" min="140" max="220">
+            </div>
+            <div class="input-wrap">
+              <div class="input-label">Edad</div>
+              <input type="number" class="input-field" id="inp-age" placeholder="30" value="30" min="18" max="70">
+            </div>
+            <div class="input-wrap">
+              <div class="input-label">Sexo</div>
+              <select class="input-field" id="inp-sex">
+                <option value="m">Masculino</option>
+                <option value="f">Femenino</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-section-title">Nivel de actividad</div>
+          <div class="radio-group">
+            <div class="radio-item">
+              <input type="radio" name="activity" id="act-sed" value="1.2">
+              <label class="radio-label" for="act-sed"><span class="rl-icon">🛋️</span><span class="rl-text">Sedentario</span></label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" name="activity" id="act-light" value="1.375">
+              <label class="radio-label" for="act-light"><span class="rl-icon">🚶</span><span class="rl-text">Ligero</span></label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" name="activity" id="act-mod" value="1.55" checked>
+              <label class="radio-label" for="act-mod"><span class="rl-icon">🏃</span><span class="rl-text">Moderado</span></label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" name="activity" id="act-high" value="1.725">
+              <label class="radio-label" for="act-high"><span class="rl-icon">💪</span><span class="rl-text">Alto</span></label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" name="activity" id="act-ext" value="1.9">
+              <label class="radio-label" for="act-ext"><span class="rl-icon">🔥</span><span class="rl-text">Extremo</span></label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" name="activity" id="act-plan" value="1.75">
+              <label class="radio-label" for="act-plan"><span class="rl-icon">⚡</span><span class="rl-text">Mi plan</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-section-title">Objetivo</div>
+          <div class="radio-group" style="grid-template-columns:repeat(3,1fr)">
+            <div class="radio-item">
+              <input type="radio" name="goal" id="goal-cut" value="-780" checked>
+              <label class="radio-label" for="goal-cut"><span class="rl-icon">🔻</span><span class="rl-text">Perder grasa</span></label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" name="goal" id="goal-maint" value="0">
+              <label class="radio-label" for="goal-maint"><span class="rl-icon">⚖️</span><span class="rl-text">Mantener</span></label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" name="goal" id="goal-bulk" value="300">
+              <label class="radio-label" for="goal-bulk"><span class="rl-icon">📈</span><span class="rl-text">Ganar músculo</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-section-title">Registro de alimentos del día</div>
+          <div class="food-log-area">
+            <div class="food-search-row">
+              <input type="text" class="food-search-input" id="food-search" placeholder="Ej: pollo 200g, avena 80g, huevo..." onkeydown="if(event.key==='Enter')addFoodFromInput()">
+              <button class="btn-add-food" onclick="addFoodFromInput()">+ Agregar</button>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:600;">Acceso rápido</div>
+              <div class="food-suggestions">
+                <span class="food-chip" onclick="quickAdd('pechuga_pollo')">🍗 Pechuga 200g</span>
+                <span class="food-chip" onclick="quickAdd('avena')">🌾 Avena 80g</span>
+                <span class="food-chip" onclick="quickAdd('huevo_entero')">🥚 Huevo entero</span>
+                <span class="food-chip" onclick="quickAdd('claras')">🥚 Claras x4</span>
+                <span class="food-chip" onclick="quickAdd('arroz_integral')">🍚 Arroz integral 150g</span>
+                <span class="food-chip" onclick="quickAdd('atun')">🐟 Atún lata</span>
+                <span class="food-chip" onclick="quickAdd('yogur')">🥛 Yogur griego 200g</span>
+                <span class="food-chip" onclick="quickAdd('aguacate')">🥑 Aguacate ½</span>
+                <span class="food-chip" onclick="quickAdd('whey')">💪 Whey 1 scoop</span>
+                <span class="food-chip" onclick="quickAdd('brocoli')">🥦 Brócoli 200g</span>
+                <span class="food-chip" onclick="quickAdd('carne_magra')">🥩 Carne magra 150g</span>
+                <span class="food-chip" onclick="quickAdd('tilapia')">🐠 Tilapia 200g</span>
+                <span class="food-chip" onclick="quickAdd('yuca')">🍠 Yuca 150g</span>
+                <span class="food-chip" onclick="quickAdd('almendras')">🌰 Almendras 25g</span>
+              </div>
+            </div>
+            <div id="food-log-list"><div class="food-log-empty">Agrega alimentos para ver tus macros del día 👆</div></div>
+          </div>
+        </div>
+
+        <button class="btn-calc" onclick="calculate()">CALCULAR MIS MACROS</button>
+        <button class="btn-reset" onclick="resetAll()">Limpiar todo</button>
+
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div class="results-panel" id="results-panel">
+
+        <div class="result-card main">
+          <div class="result-label">Calorías objetivo del día</div>
+          <div class="result-value" id="res-target">2,100<span>kcal</span></div>
+          <div class="result-sub" id="res-target-sub">Déficit calculado para perder ~0.7kg por semana</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-label">Calorías consumidas hoy</div>
+          <div class="result-value" id="res-consumed" style="color:var(--white)">0<span>kcal</span></div>
+          <div class="result-sub" id="res-remaining">Agrega alimentos para ver tu consumo</div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-label">Macros objetivo diario</div>
+          <div class="macro-bars">
+            <div class="macro-bar-item prot">
+              <div class="macro-bar-header">
+                <span class="macro-bar-name">Proteína</span>
+                <span class="macro-bar-val" id="bar-prot-val">0 / 160g</span>
+              </div>
+              <div class="macro-bar-track"><div class="macro-bar-fill" id="bar-prot" style="width:0%"></div></div>
+            </div>
+            <div class="macro-bar-item carb">
+              <div class="macro-bar-header">
+                <span class="macro-bar-name">Carbohidratos</span>
+                <span class="macro-bar-val" id="bar-carb-val">0 / 190g</span>
+              </div>
+              <div class="macro-bar-track"><div class="macro-bar-fill" id="bar-carb" style="width:0%"></div></div>
+            </div>
+            <div class="macro-bar-item fat">
+              <div class="macro-bar-header">
+                <span class="macro-bar-name">Grasas</span>
+                <span class="macro-bar-val" id="bar-fat-val">0 / 60g</span>
+              </div>
+              <div class="macro-bar-track"><div class="macro-bar-fill" id="bar-fat" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-card" id="status-card">
+          <div class="result-label">Estado del día</div>
+          <div id="status-items" style="display:flex;flex-direction:column;gap:8px;">
+            <div class="status-indicator">
+              <div class="status-dot warn"></div>
+              <div class="status-text"><strong>Sin datos aún</strong>Agrega alimentos para ver tu estado</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-label">Estadísticas rápidas</div>
+          <div class="mini-stats">
+            <div class="mini-stat"><div class="mini-stat-val" id="ms-bmr">1,920</div><div class="mini-stat-label">Metabolismo basal</div></div>
+            <div class="mini-stat"><div class="mini-stat-val" id="ms-tdee">2,880</div><div class="mini-stat-label">TDEE con actividad</div></div>
+            <div class="mini-stat"><div class="mini-stat-val" id="ms-deficit">780</div><div class="mini-stat-label">Déficit diario</div></div>
+            <div class="mini-stat"><div class="mini-stat-val" id="ms-weekly">~0.7kg</div><div class="mini-stat-label">Pérdida semanal</div></div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-label">Proyección a 5 meses</div>
+          <div class="week-projection">
+            <div class="proj-row"><span class="proj-label">Peso actual</span><span class="proj-val" id="proj-current">83 kg</span></div>
+            <div class="proj-row"><span class="proj-label">Pérdida proyectada</span><span class="proj-val green" id="proj-loss">~14 kg</span></div>
+            <div class="proj-row"><span class="proj-label">Peso final estimado</span><span class="proj-val green" id="proj-final">~69 kg</span></div>
+            <div class="proj-row"><span class="proj-label">Tu meta</span><span class="proj-val yellow">70 kg ✓</span></div>
+            <div class="proj-row"><span class="proj-label">IMC actual</span><span class="proj-val" id="proj-bmi">28.7</span></div>
+            <div class="proj-row"><span class="proj-label">IMC meta</span><span class="proj-val green" id="proj-bmi-target">24.2</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECCIÓN 2 — DIETA
+══════════════════════════════════════ -->
+<section class="section" id="sec-diet">
+  <div class="diet-hero">
+    <div class="hero-tag">Plan Alimenticio</div>
+    <h1 class="hero-title">TU DIETA<br><span>PERSONALIZADA</span></h1>
+    <p class="hero-sub">Plan de 5 comidas diseñado para perder 13kg en 5 meses preservando músculo. Selecciona el tipo de día para ver la distribución exacta.</p>
+  </div>
+
+  <div class="diet-body">
+
+    <!-- DAY SELECTOR -->
+    <div class="day-selector">
+      <button class="day-btn active" onclick="showDiet('normal',this)">Día Normal<span class="day-type">Lun · Mar · Jue · Vie</span></button>
+      <button class="day-btn" onclick="showDiet('legs',this)">Día de Piernas<span class="day-type">Miércoles</span></button>
+      <button class="day-btn" onclick="showDiet('rest',this)">Día de Descanso<span class="day-type">Domingo</span></button>
+    </div>
+
+    <!-- MACROS OVERVIEW -->
+    <div class="diet-macros-bar">
+      <div class="dmb-title">Macros objetivo del día seleccionado</div>
+      <div class="dmb-grid">
+        <div class="dmb-item kcal"><div class="dmb-val" id="dmb-kcal">2,050</div><div class="dmb-label">Calorías</div></div>
+        <div class="dmb-item prot"><div class="dmb-val" id="dmb-prot">160g</div><div class="dmb-label">Proteína</div></div>
+        <div class="dmb-item carb"><div class="dmb-val" id="dmb-carb">190g</div><div class="dmb-label">Carbos</div></div>
+        <div class="dmb-item fat"><div class="dmb-val" id="dmb-fat">58g</div><div class="dmb-label">Grasas</div></div>
+      </div>
+    </div>
+
+    <!-- MEALS -->
+    <div class="meals-grid" id="meals-container"></div>
+
+    <!-- ALIMENTOS PERMITIDOS / PROHIBIDOS -->
+    <div class="food-lists">
+      <div class="food-list-card">
+        <div class="flc-title allow">✅ Alimentos permitidos</div>
+        <div class="food-list-items">
+          <div class="fli-item"><span class="fli-icon">🍗</span><span class="fli-text">Pechuga de pollo, tilapia, carne magra</span></div>
+          <div class="fli-item"><span class="fli-icon">🥚</span><span class="fli-text">Huevos enteros y claras</span></div>
+          <div class="fli-item"><span class="fli-icon">🐟</span><span class="fli-text">Atún en agua, salmón</span></div>
+          <div class="fli-item"><span class="fli-icon">🥛</span><span class="fli-text">Yogur griego sin azúcar, queso cottage</span></div>
+          <div class="fli-item"><span class="fli-icon">🌾</span><span class="fli-text">Avena, arroz integral, quinoa</span></div>
+          <div class="fli-item"><span class="fli-icon">🍠</span><span class="fli-text">Yuca cocida, papa criolla</span></div>
+          <div class="fli-item"><span class="fli-icon">🥑</span><span class="fli-text">Aguacate, aceite de oliva</span></div>
+          <div class="fli-item"><span class="fli-icon">🥦</span><span class="fli-text">Todos los vegetales — sin límite</span></div>
+          <div class="fli-item"><span class="fli-icon">🌰</span><span class="fli-text">Almendras, maní sin sal (moderado)</span></div>
+          <div class="fli-item"><span class="fli-icon">☕</span><span class="fli-text">Café negro, té verde sin azúcar</span></div>
+          <div class="fli-item"><span class="fli-icon">💪</span><span class="fli-text">Whey protein, creatina</span></div>
+          <div class="fli-item"><span class="fli-icon">🍋</span><span class="fli-text">Limón, ajo, hierbas naturales</span></div>
+        </div>
+      </div>
+      <div class="food-list-card">
+        <div class="flc-title deny">❌ Eliminado durante 5 meses</div>
+        <div class="food-list-items">
+          <div class="fli-item"><span class="fli-icon">🍺</span><span class="fli-text">Alcohol — destruye sueño y recuperación</span></div>
+          <div class="fli-item"><span class="fli-icon">🥤</span><span class="fli-text">Gaseosas, jugos, bebidas azucaradas</span></div>
+          <div class="fli-item"><span class="fli-icon">🍞</span><span class="fli-text">Pan blanco, harina refinada</span></div>
+          <div class="fli-item"><span class="fli-icon">🍟</span><span class="fli-text">Todo lo frito — sin excepción</span></div>
+          <div class="fli-item"><span class="fli-icon">🍫</span><span class="fli-text">Dulces, postres, chocolates</span></div>
+          <div class="fli-item"><span class="fli-icon">🧂</span><span class="fli-text">Salsas industriales (mayo, kétchup)</span></div>
+          <div class="fli-item"><span class="fli-icon">🧀</span><span class="fli-text">Queso amarillo, lácteos enteros en exceso</span></div>
+          <div class="fli-item"><span class="fli-icon">🍕</span><span class="fli-text">Comida rápida y procesada</span></div>
+          <div class="fli-item"><span class="fli-icon">🍚</span><span class="fli-text">Arroz blanco en exceso</span></div>
+          <div class="fli-item"><span class="fli-icon">🧃</span><span class="fli-text">Jugos de fruta — azúcar pura</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUPLEMENTOS -->
+    <div class="supps-section">
+      <div class="supps-title">💊 Stack de suplementos recomendados</div>
+      <div class="supps-grid">
+        <div class="supp-card">
+          <div class="supp-name">Creatina Monohidratada</div>
+          <div class="supp-dose">5g / día</div>
+          <div class="supp-when">Con agua en cualquier momento. Sin ciclos.</div>
+        </div>
+        <div class="supp-card">
+          <div class="supp-name">Cafeína + L-Teanina</div>
+          <div class="supp-dose">200mg + 400mg</div>
+          <div class="supp-when">6:30am y máximo 1pm. Nunca después de las 2pm.</div>
+        </div>
+        <div class="supp-card">
+          <div class="supp-name">Magnesio Glicinato</div>
+          <div class="supp-dose">300–400mg</div>
+          <div class="supp-when">30 min antes de dormir. Mejora sueño y recuperación.</div>
+        </div>
+        <div class="supp-card">
+          <div class="supp-name">Vitamina D3 + K2</div>
+          <div class="supp-dose">2,000–5,000 IU</div>
+          <div class="supp-when">Con desayuno que contenga grasa.</div>
+        </div>
+        <div class="supp-card">
+          <div class="supp-name">Omega-3 EPA+DHA</div>
+          <div class="supp-dose">2g / día</div>
+          <div class="supp-when">Con el almuerzo. Reduce inflamación por entreno.</div>
+        </div>
+        <div class="supp-card">
+          <div class="supp-name">Complejo B (B1,B6,B12)</div>
+          <div class="supp-dose">1 tableta</div>
+          <div class="supp-when">Con desayuno. Metabolismo energético.</div>
+        </div>
+        <div class="supp-card">
+          <div class="supp-name">Zinc</div>
+          <div class="supp-dose">25–30mg</div>
+          <div class="supp-when">Con la cena. Testosterona y recuperación.</div>
+        </div>
+        <div class="supp-card">
+          <div class="supp-name">Whey Protein</div>
+          <div class="supp-dose">1 scoop post-entreno</div>
+          <div class="supp-when">Solo si no llegas a 160g de proteína con comida real.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="app-footer">
+  <div class="footer-text">Plan de Alto Rendimiento · Colombia 🇨🇴 → Canadá 🍁 · 5 Meses</div>
+  <div class="footer-tag">Consulta siempre con un profesional de salud antes de iniciar suplementos</div>
+</footer>
+
+<script>
+// ══════════════════════════════════════
+// FOOD DATABASE
+// ══════════════════════════════════════
+const FOODS = {
+  pechuga_pollo:  {name:'Pechuga de pollo',amount:'200g',kcal:220,p:46,c:0,f:4,icon:'🍗'},
+  avena:          {name:'Avena en seco',amount:'80g',kcal:300,p:12,c:54,f:6,icon:'🌾'},
+  huevo_entero:   {name:'Huevo entero',amount:'1 unidad',kcal:70,p:6,c:0.5,f:5,icon:'🥚'},
+  claras:         {name:'Claras de huevo',amount:'4 unidades',kcal:68,p:14,c:1,f:0,icon:'🥚'},
+  arroz_integral: {name:'Arroz integral cocido',amount:'150g',kcal:165,p:4,c:33,f:1.5,icon:'🍚'},
+  atun:           {name:'Atún en agua',amount:'1 lata 180g',kcal:160,p:36,c:0,f:1,icon:'🐟'},
+  yogur:          {name:'Yogur griego sin azúcar',amount:'200g',kcal:130,p:20,c:6,f:2,icon:'🥛'},
+  aguacate:       {name:'Aguacate',amount:'½ unidad',kcal:120,p:1.5,c:6,f:11,icon:'🥑'},
+  whey:           {name:'Whey protein',amount:'1 scoop 30g',kcal:120,p:25,c:3,f:2,icon:'💪'},
+  brocoli:        {name:'Brócoli cocido',amount:'200g',kcal:68,p:5,c:10,f:0.5,icon:'🥦'},
+  carne_magra:    {name:'Carne de res magra',amount:'150g',kcal:230,p:35,c:0,f:10,icon:'🥩'},
+  tilapia:        {name:'Tilapia',amount:'200g',kcal:180,p:38,c:0,f:3,icon:'🐠'},
+  yuca:           {name:'Yuca cocida',amount:'150g',kcal:175,p:1.5,c:42,f:0.5,icon:'🍠'},
+  almendras:      {name:'Almendras',amount:'25g',kcal:145,p:5,c:5,f:12,icon:'🌰'},
+};
+
+// Custom food parser
+function parseFood(text) {
+  const t = text.toLowerCase().trim();
+  const keywords = {
+    'pollo':    {name:'Pollo',kcal:1.1,p:0.23,c:0,f:0.02},
+    'arroz':    {name:'Arroz',kcal:1.3,p:0.027,c:0.28,f:0.003},
+    'huevo':    {name:'Huevo',kcal:0.7,p:0.06,c:0.005,f:0.05},
+    'atun':     {name:'Atún',kcal:0.9,p:0.2,c:0,f:0.005},
+    'avena':    {name:'Avena',kcal:3.75,p:0.15,c:0.675,f:0.075},
+    'brocoli':  {name:'Brócoli',kcal:0.34,p:0.028,c:0.065,f:0.004},
+    'aguacate': {name:'Aguacate',kcal:2.4,p:0.03,c:0.12,f:0.22},
+    'whey':     {name:'Whey',kcal:4.0,p:0.833,c:0.1,f:0.067},
+    'carne':    {name:'Carne magra',kcal:1.55,p:0.235,c:0,f:0.067},
+    'tilapia':  {name:'Tilapia',kcal:0.9,p:0.19,c:0,f:0.015},
+    'yuca':     {name:'Yuca',kcal:1.16,p:0.01,c:0.28,f:0.003},
+  };
+  const numMatch = t.match(/(\d+(?:\.\d+)?)\s*g?/);
+  const grams = numMatch ? parseFloat(numMatch[1]) : 100;
+  for (const [key, data] of Object.entries(keywords)) {
+    if (t.includes(key)) {
+      return {
+        name: data.name,
+        amount: grams + 'g',
+        kcal: Math.round(grams * data.kcal),
+        p: Math.round(grams * data.p),
+        c: Math.round(grams * data.c),
+        f: Math.round(grams * data.f),
+        icon: '🍽️'
+      };
+    }
+  }
+  return null;
+}
+
+let foodLog = [];
+
+function quickAdd(key) {
+  const food = {...FOODS[key], id: Date.now() + Math.random()};
+  foodLog.push(food);
+  renderFoodLog();
+  calculate();
+}
+
+function addFoodFromInput() {
+  const input = document.getElementById('food-search');
+  const text = input.value.trim();
+  if (!text) return;
+  const food = parseFood(text);
+  if (food) {
+    food.id = Date.now();
+    foodLog.push(food);
+    renderFoodLog();
+    calculate();
+    input.value = '';
+  } else {
+    input.style.borderColor = 'var(--red)';
+    input.placeholder = 'No reconocido — prueba: "pollo 200g"';
+    setTimeout(() => { input.style.borderColor = ''; input.placeholder = 'Ej: pollo 200g, avena 80g...'; }, 2000);
+  }
+}
+
+function removeFood(id) {
+  foodLog = foodLog.filter(f => f.id !== id);
+  renderFoodLog();
+  calculate();
+}
+
+function renderFoodLog() {
+  const el = document.getElementById('food-log-list');
+  if (foodLog.length === 0) {
+    el.innerHTML = '<div class="food-log-empty">Agrega alimentos para ver tus macros del día 👆</div>';
+    return;
+  }
+  el.innerHTML = foodLog.map(f => `
+    <div class="food-item">
+      <span style="font-size:16px">${f.icon}</span>
+      <span class="food-item-name">${f.name} <span style="color:var(--gray);font-size:11px">${f.amount}</span></span>
+      <div class="food-item-macros">
+        <span class="macro-mini p">${f.p}g P</span>
+        <span class="macro-mini c">${f.c}g C</span>
+        <span class="macro-mini g">${f.f}g G</span>
+        <span class="macro-mini k">${f.kcal} kcal</span>
+      </div>
+      <button class="btn-remove" onclick="removeFood(${f.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════
+// CALCULATE
+// ══════════════════════════════════════
+function calculate() {
+  const weight = parseFloat(document.getElementById('inp-weight').value) || 83;
+  const height = parseFloat(document.getElementById('inp-height').value) || 170;
+  const age = parseFloat(document.getElementById('inp-age').value) || 30;
+  const sex = document.getElementById('inp-sex').value;
+  const activity = parseFloat(document.querySelector('input[name="activity"]:checked')?.value || 1.725);
+  const goal = parseInt(document.querySelector('input[name="goal"]:checked')?.value || -780);
+
+  // BMR (Mifflin-St Jeor)
+  let bmr;
+  if (sex === 'm') bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+  else bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+
+  const tdee = Math.round(bmr * activity);
+  const target = Math.max(1500, tdee + goal);
+  const deficit = tdee - target;
+  const weeklyLoss = (deficit * 7 / 7700).toFixed(1);
+
+  // Macros targets
+  const protTarget = Math.round(weight * 1.9);
+  const fatTarget = Math.round(target * 0.27 / 9);
+  const carbTarget = Math.round((target - protTarget * 4 - fatTarget * 9) / 4);
+
+  // Consumed
+  const consumed = { kcal:0, p:0, c:0, f:0 };
+  foodLog.forEach(food => { consumed.kcal += food.kcal; consumed.p += food.p; consumed.c += food.c; consumed.f += food.f; });
+
+  const remaining = target - consumed.kcal;
+
+  // Update UI
+  document.getElementById('res-target').innerHTML = `${target.toLocaleString()}<span>kcal</span>`;
+  document.getElementById('res-target-sub').textContent = `Déficit de ${deficit} kcal/día · Pérdida proyectada ~${weeklyLoss}kg/semana`;
+  document.getElementById('res-consumed').innerHTML = `${consumed.kcal.toLocaleString()}<span>kcal</span>`;
+  document.getElementById('res-consumed').style.color = consumed.kcal > target * 1.05 ? 'var(--red)' : consumed.kcal >= target * 0.9 ? 'var(--green)' : 'var(--white)';
+
+  const remText = remaining > 0 ? `Te faltan ${remaining} kcal para completar el día` : `Excediste por ${Math.abs(remaining)} kcal`;
+  document.getElementById('res-remaining').textContent = remText;
+
+  // Macro bars
+  const pPct = Math.min(100, (consumed.p / protTarget) * 100);
+  const cPct = Math.min(100, (consumed.c / Math.max(1,carbTarget)) * 100);
+  const fPct = Math.min(100, (consumed.f / fatTarget) * 100);
+  document.getElementById('bar-prot').style.width = pPct + '%';
+  document.getElementById('bar-carb').style.width = cPct + '%';
+  document.getElementById('bar-fat').style.width = fPct + '%';
+  document.getElementById('bar-prot-val').textContent = `${consumed.p}g / ${protTarget}g`;
+  document.getElementById('bar-carb-val').textContent = `${consumed.c}g / ${carbTarget}g`;
+  document.getElementById('bar-fat-val').textContent = `${consumed.f}g / ${fatTarget}g`;
+
+  // Status
+  const statuses = [];
+  if (consumed.p < protTarget * 0.8) statuses.push({type:'warn',title:'Proteína baja',msg:`Llevas ${consumed.p}g de ${protTarget}g. Riesgo de perder músculo.`});
+  else if (consumed.p >= protTarget * 0.9) statuses.push({type:'good',title:'Proteína ✓',msg:`${consumed.p}g de ${protTarget}g — excelente para preservar músculo.`});
+  
+  if (consumed.kcal > target * 1.05) statuses.push({type:'bad',title:'Exceso calórico',msg:`Excediste tu objetivo por ${consumed.kcal - target} kcal. Sin déficit, sin pérdida.`});
+  else if (consumed.kcal >= target * 0.85 && consumed.kcal <= target * 1.05) statuses.push({type:'good',title:'Calorías en rango ✓',msg:`${consumed.kcal} de ${target} kcal — zona perfecta de déficit.`});
+  else if (consumed.kcal < target * 0.5 && consumed.kcal > 0) statuses.push({type:'warn',title:'Déficit muy agresivo',msg:`Muy pocas calorías. Riesgo de pérdida de músculo y caída de energía.`});
+
+  if (statuses.length === 0) statuses.push({type:'warn',title:'Sin datos suficientes',msg:'Agrega más alimentos para evaluar tu día completo.'});
+
+  document.getElementById('status-items').innerHTML = statuses.map(s => `
+    <div class="status-indicator">
+      <div class="status-dot ${s.type}"></div>
+      <div class="status-text"><strong>${s.title}</strong>${s.msg}</div>
+    </div>
+  `).join('');
+
+  // Mini stats
+  document.getElementById('ms-bmr').textContent = Math.round(bmr).toLocaleString();
+  document.getElementById('ms-tdee').textContent = tdee.toLocaleString();
+  document.getElementById('ms-deficit').textContent = deficit.toLocaleString();
+  document.getElementById('ms-weekly').textContent = `~${weeklyLoss}kg`;
+
+  // Projection
+  const projLoss = (deficit * 7 * 22 / 7700).toFixed(1);
+  const projFinal = (weight - parseFloat(projLoss)).toFixed(1);
+  const bmi = (weight / ((height/100) ** 2)).toFixed(1);
+  const bmiTarget = (parseFloat(projFinal) / ((height/100) ** 2)).toFixed(1);
+  document.getElementById('proj-current').textContent = weight + ' kg';
+  document.getElementById('proj-loss').textContent = '~' + projLoss + ' kg';
+  document.getElementById('proj-final').textContent = '~' + projFinal + ' kg';
+  document.getElementById('proj-bmi').textContent = bmi;
+  document.getElementById('proj-bmi-target').textContent = bmiTarget;
+}
+
+function resetAll() {
+  foodLog = [];
+  renderFoodLog();
+  calculate();
+}
+
+// ══════════════════════════════════════
+// DIET DATA
+// ══════════════════════════════════════
+const DIETS = {
+  normal: {
+    kcal: 2050, prot: 160, carb: 190, fat: 58,
+    meals: [
+      {
+        time:'07:30', name:'Desayuno', desc:'Comida más importante — post-entreno', kcal:550,
+        foods:[
+          {icon:'🌾',name:'Avena en agua con canela',amount:'80g en seco',p:12,c:54,f:6,highlight:true},
+          {icon:'🥚',name:'Huevo entero + 4 claras',amount:'1 entero + 4 claras',p:20,c:1,f:5},
+          {icon:'🥛',name:'Yogur griego sin azúcar',amount:'150g',p:15,c:5,f:1,highlight:true},
+          {icon:'☕',name:'Café negro sin azúcar',amount:'1 taza',p:0,c:0,f:0},
+        ],
+        tip:'Esta es tu ventana anabólica. Come el mayor carbohidrato aquí. El glucógeno gastado en el entreno absorbe los carbos sin almacenarlos como grasa.'
+      },
+      {
+        time:'12:30', name:'Almuerzo', desc:'Proteína + carbohidrato moderado + vegetales', kcal:620,
+        foods:[
+          {icon:'🍗',name:'Pechuga de pollo a la plancha',amount:'200g',p:46,c:0,f:4,highlight:true},
+          {icon:'🍚',name:'Arroz integral cocido',amount:'150g',p:4,c:33,f:1},
+          {icon:'🥑',name:'Aguacate',amount:'¼ unidad',p:0.5,c:3,f:6},
+          {icon:'🥦',name:'Ensalada grande (lechuga, tomate, pepino)',amount:'libre',p:3,c:8,f:0},
+          {icon:'🫒',name:'Aceite de oliva + limón',amount:'1 cdta',p:0,c:0,f:5},
+        ],
+        tip:'El almuerzo es tu segunda comida grande. Los carbohidratos aquí todavía se usan bien porque tienes toda la tarde activo.'
+      },
+      {
+        time:'16:00', name:'Merienda', desc:'Proteína + grasa — sin carbohidrato simple', kcal:260,
+        foods:[
+          {icon:'🐟',name:'Atún en agua con limón',amount:'1 lata 180g',p:36,c:0,f:1,highlight:true},
+          {icon:'🌰',name:'Almendras',amount:'20g',p:4,c:4,f:11},
+        ],
+        tip:'La merienda es opcional — solo cómela si tienes hambre real. Si no tienes hambre, no comas. Tu cuerpo está bien con las calorías del día.'
+      },
+      {
+        time:'20:30', name:'Cena', desc:'Solo proteína + vegetales — cero carbohidrato', kcal:320,
+        foods:[
+          {icon:'🐠',name:'Tilapia o pechuga a la plancha',amount:'150g',p:35,c:0,f:3,highlight:true},
+          {icon:'🥦',name:'Brócoli al vapor con ajo',amount:'200g',p:5,c:10,f:0.5},
+          {icon:'🫒',name:'Aceite de oliva',amount:'1 cdta',p:0,c:0,f:5},
+        ],
+        tip:'Sin carbohidrato en la cena. Tu sensibilidad a la insulina es baja en la noche y dormirás en 90 minutos. La proteína alimenta la recuperación muscular mientras duermes.'
+      },
+      {
+        time:'22:00', name:'Suplemento nocturno', desc:'Para maximizar la recuperación', kcal:0,
+        foods:[
+          {icon:'💊',name:'Magnesio glicinato',amount:'300–400mg',p:0,c:0,f:0},
+          {icon:'💊',name:'Zinc',amount:'25mg',p:0,c:0,f:0},
+        ],
+        tip:'El magnesio mejora la calidad del sueño profundo donde ocurre la mayor liberación de hormona de crecimiento. No lo saltes.'
+      },
+    ]
+  },
+  legs: {
+    kcal: 2200, prot: 165, carb: 230, fat: 58,
+    meals: [
+      {
+        time:'07:30', name:'Desayuno', desc:'Máximo combustible — día más intenso de la semana', kcal:650,
+        foods:[
+          {icon:'🌾',name:'Avena en agua con canela',amount:'80g en seco',p:12,c:54,f:6,highlight:true},
+          {icon:'🍌',name:'Banano completo',amount:'1 unidad grande',p:1,c:27,f:0,highlight:true},
+          {icon:'🥚',name:'Huevo entero + 4 claras',amount:'1 entero + 4 claras',p:20,c:1,f:5},
+          {icon:'🥛',name:'Yogur griego sin azúcar',amount:'150g',p:15,c:5,f:1},
+        ],
+        tip:'Hoy es día de piernas — el entreno más intenso. El banano extra te da carbohidrato de rápida absorción para la sesión. No lo elimines este día.'
+      },
+      {
+        time:'12:30', name:'Almuerzo', desc:'Más carbohidrato para recuperar glucógeno muscular', kcal:720,
+        foods:[
+          {icon:'🍗',name:'Pechuga de pollo a la plancha',amount:'200g',p:46,c:0,f:4,highlight:true},
+          {icon:'🍚',name:'Arroz integral cocido',amount:'200g',p:5,c:44,f:1.5,highlight:true},
+          {icon:'🍠',name:'Yuca cocida (alternativa al arroz)',amount:'150g',p:1.5,c:42,f:0.5},
+          {icon:'🥦',name:'Ensalada grande',amount:'libre',p:3,c:8,f:0},
+          {icon:'🥑',name:'Aguacate',amount:'¼ unidad',p:0.5,c:3,f:6},
+        ],
+        tip:'El almuerzo de piernas lleva 50g más de carbohidrato que los otros días. Los músculos grandes de pierna agotaron mucho glucógeno — necesitan reposición.'
+      },
+      {
+        time:'16:00', name:'Merienda', desc:'Proteína + fruta para la recuperación', kcal:300,
+        foods:[
+          {icon:'💪',name:'Whey protein',amount:'1 scoop 30g',p:25,c:3,f:2,highlight:true},
+          {icon:'🍎',name:'Manzana o pera mediana',amount:'1 unidad',p:0.5,c:25,f:0},
+        ],
+        tip:'Hoy sí agrega fruta en la merienda. La fructosa de la fruta repone el glucógeno hepático sin competir con el muscular.'
+      },
+      {
+        time:'20:30', name:'Cena', desc:'Proteína alta para recuperación nocturna', kcal:380,
+        foods:[
+          {icon:'🥩',name:'Carne de res magra o pollo',amount:'180g',p:42,c:0,f:8,highlight:true},
+          {icon:'🥦',name:'Brócoli + espinaca salteada',amount:'250g',p:6,c:12,f:1},
+          {icon:'🧄',name:'Ajo + aceite de oliva',amount:'al gusto',p:0,c:1,f:5},
+        ],
+        tip:'La cena de piernas lleva más proteína porque el daño muscular del entreno es mayor. Sin carbohidrato de todos modos — el ciclo hormonal nocturno sigue siendo prioritario.'
+      },
+      {
+        time:'22:00', name:'Suplemento nocturno', desc:'Recuperación intensificada', kcal:0,
+        foods:[
+          {icon:'💊',name:'Magnesio glicinato',amount:'400mg — dosis alta hoy',p:0,c:0,f:0},
+          {icon:'💊',name:'Zinc + Vitamina C',amount:'25mg + 500mg',p:0,c:0,f:0},
+        ],
+        tip:'Después de piernas tu cuerpo tiene la mayor demanda de recuperación de la semana. El magnesio alto mejora el sueño profundo y la síntesis proteica nocturna.'
+      },
+    ]
+  },
+  rest: {
+    kcal: 1750, prot: 160, carb: 120, fat: 58,
+    meals: [
+      {
+        time:'08:00', name:'Desayuno', desc:'Más tarde y más ligero — sin entreno', kcal:420,
+        foods:[
+          {icon:'🥚',name:'Huevo entero + 4 claras revueltos',amount:'1 entero + 4 claras',p:20,c:1,f:5,highlight:true},
+          {icon:'🌾',name:'Avena',amount:'50g en seco — menos que otros días',p:7,c:34,f:4},
+          {icon:'🥛',name:'Yogur griego sin azúcar',amount:'150g',p:15,c:5,f:1},
+          {icon:'☕',name:'Café negro',amount:'1 taza',p:0,c:0,f:0},
+        ],
+        tip:'Sin entreno hoy, el desayuno es 30% más pequeño. Sin glucógeno muscular que reponer no necesitas los mismos carbohidratos.'
+      },
+      {
+        time:'13:00', name:'Almuerzo', desc:'Proteína completa + carbohidrato reducido', kcal:560,
+        foods:[
+          {icon:'🐟',name:'Atún o tilapia a la plancha',amount:'200g',p:38,c:0,f:2,highlight:true},
+          {icon:'🍚',name:'Arroz integral cocido',amount:'100g — mitad de lo normal',p:3,c:22,f:1},
+          {icon:'🥦',name:'Vegetales mixtos',amount:'libre',p:4,c:10,f:0},
+          {icon:'🥑',name:'Aguacate',amount:'¼ unidad',p:0.5,c:3,f:6},
+        ],
+        tip:'El almuerzo de descanso tiene la mitad del carbohidrato del día normal. Sin gasto energético del entreno, el exceso de carbohidrato va directo a reserva.'
+      },
+      {
+        time:'16:00', name:'Merienda ligera', desc:'Proteína sin carbohidrato', kcal:200,
+        foods:[
+          {icon:'🥛',name:'Queso cottage',amount:'150g',p:18,c:3,f:2,highlight:true},
+          {icon:'🥒',name:'Pepino en rodajas',amount:'libre',p:1,c:3,f:0},
+        ],
+        tip:'La merienda de descanso es la más ligera de la semana. Queso cottage tiene caseína — proteína de digestión lenta que mantiene la saciedad.'
+      },
+      {
+        time:'20:00', name:'Cena', desc:'Igual que siempre — proteína + vegetales', kcal:300,
+        foods:[
+          {icon:'🍗',name:'Pechuga de pollo a la plancha',amount:'150g',p:35,c:0,f:3,highlight:true},
+          {icon:'🥦',name:'Brócoli o espinaca',amount:'200g',p:5,c:8,f:0.5},
+          {icon:'🫒',name:'Aceite de oliva',amount:'1 cdta',p:0,c:0,f:5},
+        ],
+        tip:'La cena no cambia en el día de descanso. La proteína alta en la noche es constante los 7 días porque el músculo se recupera y renueva incluso sin entrenar.'
+      },
+    ]
+  }
+};
+
+function showDiet(type, el) {
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const diet = DIETS[type];
+
+  document.getElementById('dmb-kcal').textContent = diet.kcal.toLocaleString();
+  document.getElementById('dmb-prot').textContent = diet.prot + 'g';
+  document.getElementById('dmb-carb').textContent = diet.carb + 'g';
+  document.getElementById('dmb-fat').textContent = diet.fat + 'g';
+
+  document.getElementById('meals-container').innerHTML = diet.meals.map(meal => `
+    <div class="meal-card">
+      <div class="meal-header">
+        <div class="meal-time">${meal.time}</div>
+        <div class="meal-name">
+          <div class="meal-name-text">${meal.name}</div>
+          <div class="meal-desc">${meal.desc}</div>
+        </div>
+        <div class="meal-kcal">${meal.kcal} <span>kcal</span></div>
+      </div>
+      <div class="meal-foods">
+        ${meal.foods.map(f => `
+          <div class="meal-food-row${f.highlight ? ' highlight' : ''}">
+            <span class="mfr-icon">${f.icon}</span>
+            <div class="mfr-info">
+              <div class="mfr-name">${f.name}</div>
+              <div class="mfr-amount">${f.amount}</div>
+            </div>
+            <div class="mfr-macros">
+              ${f.p > 0 ? `<span class="mfr-badge p">${f.p}g P</span>` : ''}
+              ${f.c > 0 ? `<span class="mfr-badge c">${f.c}g C</span>` : ''}
+              ${f.f > 0 ? `<span class="mfr-badge f">${f.f}g G</span>` : ''}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      ${meal.tip ? `<div class="meal-tip"><strong>💡 Por qué</strong>${meal.tip}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════
+// NAV
+// ══════════════════════════════════════
+function showSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  calculate();
+  showDiet('normal', document.querySelector('.day-btn.active'));
+  document.getElementById('inp-weight').addEventListener('input', calculate);
+  document.getElementById('inp-height').addEventListener('input', calculate);
+  document.getElementById('inp-age').addEventListener('input', calculate);
+  document.getElementById('inp-sex').addEventListener('change', calculate);
+  document.querySelectorAll('input[name="activity"]').forEach(r => r.addEventListener('change', calculate));
+  document.querySelectorAll('input[name="goal"]').forEach(r => r.addEventListener('change', calculate));
+});
+</script>
+</body>
+</html>
